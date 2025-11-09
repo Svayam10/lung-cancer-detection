@@ -1,36 +1,3 @@
-# ================================================================
-# LUNG CANCER DETECTION: U-NET (Baseline vs Attention) + CNN
-# Complete Implementation for VSCode - FIXED VERSION
-# ================================================================
-
-"""
-PROJECT STRUCTURE:
-lung-cancer-detection/
-├── main.py (this file)
-├── data/
-│   ├── CXR_png/          # Your CT images
-│   ├── masks/            # Your mask images
-│   └── ClinicalReadings/ # Your patient data
-├── models/
-│   ├── unet_baseline.h5
-│   ├── unet_attention.h5
-│   └── cnn_classifier.h5
-└── results/
-    ├── segmentation_baseline/
-    ├── segmentation_attention/
-    ├── classification_results/
-    └── metrics_comparison.png
-
-INSTRUCTIONS:
-1. Create the folder structure above
-2. Place your datasets in the data/ folder
-3. Run sections one by one (they're marked)
-4. Results will be saved in results/ folder
-"""
-
-# ================================================================
-# SECTION 1: IMPORTS AND SETUP
-# ================================================================
 print("="*60)
 print("SECTION 1: IMPORTS AND SETUP")
 print("="*60)
@@ -50,7 +17,6 @@ import cv2
 import warnings
 warnings.filterwarnings('ignore')
 
-# Create directories
 os.makedirs('models', exist_ok=True)
 os.makedirs('results/segmentation_baseline', exist_ok=True)
 os.makedirs('results/segmentation_attention', exist_ok=True)
@@ -59,14 +25,10 @@ os.makedirs('results/classification_results', exist_ok=True)
 print("✓ Setup complete!")
 print()
 
-# ================================================================
-# SECTION 2: DATA LOADING FUNCTIONS
-# ================================================================
 print("="*60)
 print("SECTION 2: DATA LOADING")
 print("="*60)
 
-# Update these paths to your actual data location
 CT_IMAGES_PATH = 'data/CXR_png'
 MASKS_PATH = 'data/masks'
 CLINICAL_PATH = 'data/ClinicalReadings'
@@ -78,7 +40,6 @@ def load_images_and_masks(ct_images_path, masks_path, img_size):
     masks = []
     filenames = []
     
-    # Collect all available mask filenames
     available_masks = {}
     for filename in os.listdir(masks_path):
         if filename.endswith('_mask.png'):
@@ -142,9 +103,6 @@ print(f"Training samples: {len(X_train)}")
 print(f"Validation samples: {len(X_val)}")
 print()
 
-# ================================================================
-# SECTION 3: MODEL ARCHITECTURES
-# ================================================================
 print("="*60)
 print("SECTION 3: MODEL ARCHITECTURES")
 print("="*60)
@@ -256,9 +214,6 @@ def unet_attention(input_size=(256, 256, 1)):
 print("✓ Model architectures defined")
 print()
 
-# ================================================================
-# SECTION 4: TRAIN BASELINE U-NET
-# ================================================================
 print("="*60)
 print("SECTION 4: BASELINE U-NET")
 print("="*60)
@@ -326,9 +281,6 @@ else:
 
 print()
 
-# ================================================================
-# SECTION 5: TRAIN U-NET WITH ATTENTION
-# ================================================================
 print("="*60)
 print("SECTION 5: U-NET WITH ATTENTION")
 print("="*60)
@@ -396,9 +348,6 @@ else:
 
 print()
 
-# ================================================================
-# SECTION 6: VISUALIZE SEGMENTATION RESULTS
-# ================================================================
 print("="*60)
 print("SECTION 6: VISUALIZING SEGMENTATION RESULTS")
 print("="*60)
@@ -451,9 +400,6 @@ pred_attention = (pred_attention > 0.5).astype(np.uint8)
 plot_segmentation_comparison(X_val[:5], y_val[:5], pred_baseline, pred_attention)
 print()
 
-# ================================================================
-# SECTION 7: LOAD CLINICAL DATA FOR CLASSIFICATION
-# ================================================================
 print("="*60)
 print("SECTION 7: PREPARING CLASSIFICATION DATA")
 print("="*60)
@@ -476,8 +422,6 @@ def load_segmented_masks(masks_path, target_size=(256, 256)):
     
     return np.array(masks), filenames
 
-# Load clinical data CSV
-# UPDATE THIS PATH to your actual CSV file location
 csv_file_path = "data/output.csv"  # Change this to your CSV path
 
 # If CSV doesn't exist, create it from clinical readings
@@ -538,9 +482,6 @@ assert len(masks_clf) == len(labels_encoded), f"Mismatch: {len(masks_clf)} masks
 print("✓ Data alignment verified")
 print()
 
-# ================================================================
-# SECTION 8: CNN CLASSIFICATION MODEL
-# ================================================================
 print("="*60)
 print("SECTION 8: CNN CLASSIFICATION")
 print("="*60)
@@ -685,9 +626,6 @@ else:
 
 print()
 
-# ================================================================
-# SECTION 9: METRICS COMPARISON
-# ================================================================
 print("="*60)
 print("SECTION 9: METRICS COMPARISON")
 print("="*60)
@@ -740,9 +678,6 @@ def plot_metrics_comparison(history_baseline, history_attention, history_cnn):
 plot_metrics_comparison(history_baseline, history_attention, history_cnn)
 print()
 
-# ================================================================
-# SECTION 10: FINAL RESULTS SUMMARY
-# ================================================================
 print("="*60)
 print("SECTION 10: FINAL RESULTS SUMMARY")
 print("="*60)
@@ -813,7 +748,3 @@ def print_final_metrics():
     print("="*60)
 
 print_final_metrics()
-
-# ================================================================
-# END OF SCRIPT
-# ================================================================
